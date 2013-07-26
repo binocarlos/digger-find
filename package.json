@@ -1,0 +1,33 @@
+{
+  "name": "digger-find",
+  "version": "0.0.1",
+  "description": "The client side find function for digger container trees",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/binocarlos/digger-find.git"
+  },
+  "keywords": [
+    "digger",
+    "find"
+  ],
+  "author": "Kai Davenport",
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "gitHead": "40ae2376b1614e7745ce42d872978747c96e5286",
+  "bugs": {
+    "url": "https://github.com/binocarlos/digger-find/issues"
+  },
+  "devDependencies": {
+    "mocha": "~1.12.0",
+    "should": "~1.2.2",
+    "digger-container": "0.0.5"
+  },
+  "dependencies": {
+    "digger-utils": "~1.0.0",
+    "digger-selector": "0.0.3"
+  }
+}
