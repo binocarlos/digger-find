@@ -39,4 +39,17 @@ describe('digger-find', function(){
     
   })
 
+  it('should do a not selector', function() {
+
+    var test = Container(citydata);
+
+    var cities = test.find('city:not');
+
+    cities.each(function(city){
+      (city.tag()=='city').should.equal(false);
+    })
+
+    
+  })
+
 })

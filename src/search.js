@@ -90,25 +90,40 @@ function compile(selector){
     var model = container.get(0);
     var digger = model._digger;
 
+    // tells you if the given boolean should actuall be true
+    // this allows the :not modifier to negate searches
+    function notfilter(val){
+      if(!val){
+        val = false;
+      }
+      return selector.modifier && selector.modifier.not ? !val : val;
+    }
+
+    function notcountfilter(number){
+      var orig = number || 0;
+      var opposite = orig==0 ? 1 : 0;
+      return selector.modifier && selector.modifier.not ? opposite : orig;
+    }
+
     // we step through one at a time - as soon as something fails we do not match
 
     // if we have a wildcard then we pass
     if(selector.tag=='*'){
-      return true;
+      return notfilter(true);
     }
 
     // #id
-    if(selector.id && digger.id!=selector.id){      
+    if(selector.id && notfilter(digger.id!=selector.id)){
       return false;
     }
 
     // =diggerid
-    if(selector.diggerid && digger.diggerid!=selector.diggerid){
+    if(selector.diggerid && notfilter(digger.diggerid!=selector.diggerid)){
       return false;
     }
 
     // tagname
-    if(selector.tag && digger.tag!=selector.tag){
+    if(selector.tag && notfilter(digger.tag!=selector.tag)){
       return false;
     }
   
@@ -117,7 +132,7 @@ function compile(selector){
       var keys = Object.keys(selector.class || {});
       var classcount = 0;
       keys.forEach(function(c){
-        classcount += container.hasClass(c) ? 1 : 0;
+        classcount += container.hasClass(c) ? notcountfilter(1) : notcountfilter(0);
       })
       if(classcount<keys.length){
         return false;
@@ -135,11 +150,11 @@ function compile(selector){
 
         // [size]
         if(!attr_filter.value){
-          attr_count += check_value !== null ? 1 : 0;
+          attr_count += check_value !== null ? notcountfilter(1) : notcountfilter(0);
         }
         // [size>100]
         else if(operator_function){
-          attr_count += operator_function.apply(null, [check_value, attr_filter.value]) ? 1 : 0;
+          attr_count += operator_function.apply(null, [check_value, attr_filter.value]) ? notcountfilter(1) : notcountfilter(0);
         }
         // no operator function found
       })
