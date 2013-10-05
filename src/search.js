@@ -105,11 +105,25 @@ function compile(selector){
       return selector.modifier && selector.modifier.not ? opposite : orig;
     }
 
+    var hits = 0;
+
     // we step through one at a time - as soon as something fails we do not match
 
     // if we have a wildcard then we pass
     if(selector.tag=='*'){
       return notfilter(true);
+    }
+
+    if(selector.id){
+      hits++;
+    }
+
+    if(selector.diggerid){
+      hits++;
+    }
+
+    if(selector.tag){
+      hits++;
     }
 
     // #id
@@ -132,6 +146,7 @@ function compile(selector){
       var keys = Object.keys(selector.class || {});
       var classcount = 0;
       keys.forEach(function(c){
+        hits++;
         classcount += container.hasClass(c) ? notcountfilter(1) : notcountfilter(0);
       })
       if(classcount<keys.length){
@@ -144,7 +159,7 @@ function compile(selector){
       var attr_count = 0;
 
       selector.attr.forEach(function(attr_filter){
-
+        hits++;
         var check_value = container.attr(attr_filter.field);
         var operator_function = attr_compare_functions[attr_filter.operator];
 
@@ -164,8 +179,8 @@ function compile(selector){
       }
     }
 
-    return true;
-      
+    // a 'they actually have nothing in the selector check'
+    return hits>0;
   }
 }
 

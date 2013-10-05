@@ -86,7 +86,7 @@ module.exports = {
       the compiler looks after turning strings into selector objects
       
     */
-    if(!typeof(filterfn)=='function'){
+    if(typeof(filterfn)!='function'){
       if(typeof(filterfn)=='string'){
         filterfn = Selector(filterfn).phases[0][0];
       }
