@@ -2,7 +2,14 @@ var api = require('../src')
 var Container = require('digger-container');
 var citydata = require('./fixtures/cities.json');
 
-Container.augment_prototype(api);
+
+function augment_prototype(api){
+  for(var prop in api){
+    Container.proto.prototype[prop] = api[prop];
+  }
+}
+
+augment_prototype(api);
 
 describe('digger-find', function(){
 
