@@ -1,6 +1,6 @@
 {
   "name": "digger-find",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "The client side find function for digger container trees",
   "main": "src/index.js",
   "scripts": {
