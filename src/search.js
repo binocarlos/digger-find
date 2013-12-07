@@ -206,7 +206,11 @@ function search(selector, context){
   }
 
   // now we loop each child container piping it via the selector filter
-  var ret = search_in.filter(selector_filter);
+  var matchingmodels = search_in.containers().filter(selector_filter).map(function(container){
+    return container.get(0);
+  })
+
+  var ret = search_in.spawn(matchingmodels);
 
   var modifier = selector.modifier || {};
 
