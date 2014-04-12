@@ -33,18 +33,6 @@ describe('digger-find', function(){
     test.find('city.south:limit(2)').count().should.equal(2);
   })
 
-  it('should extract a meta skeleton', function() {
-
-    var test = Container(citydata);
-
-    var cities = test.find('city.south');
-
-    var skeleton = cities.skeleton();
-
-    skeleton.length.should.equal(3);
-    skeleton[0].tag.should.equal('city');
-    
-  })
 
   it('should do a not selector', function() {
 
