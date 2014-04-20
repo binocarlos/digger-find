@@ -109,5 +109,8 @@ module.exports = {
     var results = this.filter(selector);
 
     return results.count()>0;
-  }
+  },
+
+  search:search.searcher,
+  compile:search.compiler
 }

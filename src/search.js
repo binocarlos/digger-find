@@ -1,4 +1,5 @@
 var utils = require('digger-utils');
+var Selector = require('digger-selector');
 
 module.exports.searcher = search;
 module.exports.compiler = compile;
@@ -43,6 +44,19 @@ var attr_compare_functions = {
   }
 }
 
+
+function val(model, field){
+  var parts = field.split('.')
+  var curr = model
+  while(parts.length>0){
+    var f = parts.shift()
+    curr = curr[f]
+    if(!curr){
+      break
+    }
+  }
+  return curr
+}
 /*
 
   Turn a selector object into a compiled function to have containers run through
@@ -51,10 +65,22 @@ var attr_compare_functions = {
 
 function compile(selector){
 
+  if(typeof(selector)==='string'){
+    selector = Selector(selector, true)
+  }
+
   // return a function that will return boolean for a container matching this selector
   return function(container){
 
-    var model = container.get(0);
+    var model;
+
+    if(container._digger){
+      model = container
+    }
+    else{
+      model = container.get(0)
+    }
+
     var digger = model._digger;
 
     // tells you if the given boolean should actuall be true
@@ -111,23 +137,34 @@ function compile(selector){
     // classnames
     if(selector.class){
       var keys = Object.keys(selector.class || {});
+
+      var vals = {}
+      var arr = digger.class
+      
+      arr.forEach(function(c){
+        vals[c] = true
+      })
       var classcount = 0;
       keys.forEach(function(c){
         hits++;
-        classcount += container.hasClass(c) ? notcountfilter(1) : notcountfilter(0);
+        classcount += vals[c] ? notcountfilter(1) : notcountfilter(0);
       })
+
       if(classcount<keys.length){
         return false;
       }
     }
-    
+
     if(selector.attr){
 
       var attr_count = 0;
 
       selector.attr.forEach(function(attr_filter){
         hits++;
-        var check_value = container.attr(attr_filter.field);
+
+
+        var check_value = val(model, attr_filter.field)
+        //container.attr(attr_filter.field);
         var operator_function = attr_compare_functions[attr_filter.operator];
 
         // [size]
