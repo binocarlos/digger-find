@@ -47,4 +47,24 @@ describe('digger-find', function(){
     
   })
 
+  it('should run a compiled function against a pure js object', function() {
+
+
+    var data = {
+      _digger:{
+        class:['red']
+      },
+      name:'Scotland',
+      price:120
+    }
+
+    var s = api.compile('.red[name^=S][price>100]')
+
+    var match = s(data)
+
+    match.should.equal(true)
+
+    
+  })
+
 })
