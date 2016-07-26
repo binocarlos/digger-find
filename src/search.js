@@ -139,7 +139,7 @@ function compile(selector){
       var keys = Object.keys(selector.class || {});
 
       var vals = {}
-      var arr = digger.class
+      var arr = digger.class || []
       
       arr.forEach(function(c){
         vals[c] = true
